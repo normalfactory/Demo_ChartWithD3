@@ -1,5 +1,6 @@
-/*
-
+/* Demonstration to showcase how to have a d3 bar chart display in page.
+The SVG that the chart is located within is redrawn when the browser window
+is resized.
 */
 
 console.log("--> app.js");
@@ -48,10 +49,10 @@ function getSvgHeight(){
 
 
 function createChart(sourceData){
-    /*
+    /* Creates the chart within the SVG.
 
     Accepts : sourceData (array) data used to populate the bar chart
-                names: (string) List of the names of the strings
+                name: (string) List of the names of the strings
                 count: (int) List of the count of records in the bin
             
     Returns : undefined
@@ -98,7 +99,7 @@ function createChart(sourceData){
                     .padding(0.1);
 
     let xAxis = d3.axisBottom(xScale);
-                    // .tickFormat((d, i) => sourceData[i]);
+
 
 
     //- Prepare Y: Count
@@ -151,7 +152,6 @@ function createChart(sourceData){
 }
 
 
-
 function createMockData(){
     /* Creates the mock data to be used with the chart; this data could be from RESTFul endpoint or passed 
     to the control
@@ -180,11 +180,16 @@ function createMockData(){
 
 
 function makeChartResponsive(){
-    /*
+    /* Called when the window is resized; when it is found that the size of the SVG has changed
+    the chart is redrawn
+    
+    Accepts : nothing
 
+    Returns : undefined
     */
 
     console.log("--> makeChartResponsive");
+
 
     //- Get Current Width
     let currentWidth = getChartDivWidth(CHARTDIVNAME);
