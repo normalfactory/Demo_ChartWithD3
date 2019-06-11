@@ -17,6 +17,8 @@ const CHARTMARGINS = {
 }
 
 
+//- Global
+var _svgWidth = 0;  //width that was used to generate the SVG
 
 
 
@@ -69,13 +71,13 @@ function createChart(sourceData){
 
     //- Determine SVG Size
     let svgHeight = getSvgHeight();
-    let svgWidth = getChartDivWidth();
+    _svgWidth = getChartDivWidth();
 
 
     //- Create SVG Container
     let svgContainer = d3.select(CHARTDIVNAME).append("svg")
                             .attr("height", svgHeight)
-                            .attr("width", svgWidth);
+                            .attr("width", _svgWidth);
 
 
     //- Shift Chart based on margins
@@ -85,7 +87,7 @@ function createChart(sourceData){
 
     //- Get Chart Area; exclude margins
     let chartHeight = (svgHeight - CHARTMARGINS.top - CHARTMARGINS.bottom);
-    let chartWidth = (svgWidth - CHARTMARGINS.left - CHARTMARGINS.right);
+    let chartWidth = (_svgWidth - CHARTMARGINS.left - CHARTMARGINS.right);
 
 
 
@@ -129,7 +131,7 @@ function createChart(sourceData){
     let xLabel = svgChartGroup.append("g");
 
     xLabel.append("text")
-        .attr("transform", `translate(${svgWidth / 2}, ${svgHeight + CHARTMARGINS.top - 20})`)
+        .attr("transform", `translate(${chartWidth / 2}, ${svgHeight + CHARTMARGINS.top - 20})`)
         .attr("class", "chartAxisText")
         .text("Bin ID");
 
@@ -177,6 +179,36 @@ function createMockData(){
 }
 
 
+function makeChartResponsive(){
+    /*
+
+    */
+
+    console.log("--> makeChartResponsive");
+
+    //- Get Current Width
+    let currentWidth = getChartDivWidth(CHARTDIVNAME);
+
+    if (currentWidth == _svgWidth){
+        console.log("No change in width");
+        return;
+    }
+    else{
+        console.log(`Change in width, current: ${currentWidth}  existing: ${_svgWidth}`);
+
+        //- Create Mock Data
+        let sourceData = createMockData();
+
+        //- Create Chart
+        createChart(sourceData);
+    }
+
+}
+
+
+//- Prepare Responsive Layout
+//  Listen for the resize event and call the function to re-draw the chart
+d3.select(window).on("resize", makeChartResponsive);
 
 
 //- Create Mock Data
