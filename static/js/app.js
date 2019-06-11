@@ -12,8 +12,8 @@ const CHARTDIVNAME = "#barchart";   // name of div that contains bar chart
 const CHARTMARGINS = {
     top: 10,
     right: 10,
-    bottom: 20,
-    left: 30
+    bottom: 40,
+    left: 60
 }
 
 
@@ -99,12 +99,6 @@ function createChart(sourceData){
                     // .tickFormat((d, i) => sourceData[i]);
 
 
-    svgChartGroup.append('g')
-        .attr("transform", `translate(0, ${chartHeight})`)
-        .call(d3.axisBottom(xScale));
-
-
-
     //- Prepare Y: Count
     let maxYValue = d3.max(sourceData, d => d.count);
 
@@ -114,24 +108,44 @@ function createChart(sourceData){
     
     let yAxis = d3.axisLeft(yScale);
 
-    svgChartGroup.append("g")
-            .call(d3.axisLeft(yScale));
     
     //- Create Chart
     svgChartGroup.selectAll("bar")
             .data(sourceData)
             .enter()
             .append("rect")
-            .attr("class", "binBar")
+            .attr("class", "chartBar")
             .attr("x", d => xScale(d.name))
             .attr("y", d => yScale(d.count))
             .attr("height", d => chartHeight - yScale(d.count))
             .attr("width", xScale.bandwidth() );
 
 
+    //- Create X Axis
+    svgChartGroup.append('g')
+        .attr("transform", `translate(0, ${chartHeight})`)
+        .call(d3.axisBottom(xScale));
+
+    let xLabel = svgChartGroup.append("g");
+
+    xLabel.append("text")
+        .attr("transform", `translate(${svgWidth / 2}, ${svgHeight + CHARTMARGINS.top - 20})`)
+        .attr("class", "chartAxisText")
+        .text("Bin ID");
+
+
+    //- Create Y Axis
+    svgChartGroup.append("g")
+        .call(d3.axisLeft(yScale));
     
+    let yLabel = svgChartGroup.append("g");
 
-
+    yLabel.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -30)
+            .attr("x", 0 - (svgHeight / 2))
+            .attr("class", "chartAxisText")
+            .text("Count in Bin");
 }
 
 

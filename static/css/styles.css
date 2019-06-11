@@ -5,3 +5,19 @@
     font-size: 25px;
     font-weight: bold;
 }
+
+
+/* Chart */
+.chartBar{
+    fill:green;
+}
+
+.chartBar:hover{
+    fill: red;
+}
+
+.chartAxisText{
+    font-family: sans-serif;
+    font-size: 12px;
+    text-anchor: middle;
+}
